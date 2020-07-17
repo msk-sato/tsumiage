@@ -1,11 +1,11 @@
 <div class="row">
   <aside class="col-sm-4">
     <div class="card">
-      <img class="rounded img-fluid" src="<%= gravatar_url(@user, { size: 500 }) %>" alt="">
+      <div class="card-header">
+        <h3 class="card-title"><%= @user.name %></h3>
+      </div>
       <div class="card-body">
-        <h5 class="card-title"><%= @user.name %></h5>
-        <p class="card-text"><%= @user.profile %></p>
-        <a href="#" class="btn btn-primary">プロフィール編集</a>
+        <img class="rounded img-fluid" src="<%= gravatar_url(@user, { size: 500 }) %>" alt="">
       </div>
     </div>
     <%= render 'relationships/follow_button', user: @user %>
@@ -16,6 +16,6 @@
       <li class="nav-item"><a href="<%= followings_user_path(@user) %>" class="nav-link <%= 'active' if current_page?(followings_user_path(@user)) %>">フォロー  <span class="badge badge-secondary"><%= @count_followings %></span></a></li>
       <li class="nav-item"><a href="<%= followers_user_path(@user) %>" class="nav-link <%= 'active' if current_page?(followers_user_path(@user)) %>">フォロワー  <span class="badge badge-secondary"><%= @count_followers %></span></a></li>
     </ul>
-    <%= render 'reports/reports', reports: @reports %>
+    <%= render 'users', users: @followers %>
   </div>
 </div>
