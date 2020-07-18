@@ -16,6 +16,7 @@ Rails.application.routes.draw do
     end
   end
   
-  resources :reports, only: [:create, :destroy]
+  resources :reports, only: [:create, :destroy, :show]
   resources :relationships, only: [:create, :destroy]
+  resources :cheers, only: [:create]
 end

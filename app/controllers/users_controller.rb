@@ -28,9 +28,19 @@ class UsersController < ApplicationController
   end
 
   def edit
+    @user = User.find(params[:id])
   end
 
   def update
+    @user = User.find(params[:id])
+    
+    if @user.update_attributes(user_params)
+      flash[:success] = 'プロフィールを変更しました。'
+      redirect_to @user
+    else
+      flash.now[:danger] = 'ユーザの登録に失敗しました。'
+      render :new
+    end
   end
   
   def followings
@@ -44,7 +54,10 @@ class UsersController < ApplicationController
     @followers = @user.followers.page(params[:page])
     counts(@user)
   end
-
+  
+  def search
+    @users = User.Search(params[:search])
+  end
   
   private
 

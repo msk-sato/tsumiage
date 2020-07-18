@@ -6,12 +6,15 @@ class User < ApplicationRecord
                     uniqueness: { case_sensitive: false }
   validates :profile, length: { maximum: 255 }
   has_secure_password
+  validates :password, presence: true, allow_nil: true
   
   has_many :reports
   has_many :relationships
   has_many :followings, through: :relationships, source: :follow
   has_many :reverses_of_relationship, class_name: 'Relationship', foreign_key: 'follow_id'
   has_many :followers, through: :reverses_of_relationship, source: :user
+  has_many :cheers
+  has_many :cheerings, through: :cheers, source: :report
   
   def follow(other_user)
     unless self == other_user
@@ -30,5 +33,23 @@ class User < ApplicationRecord
   
   def feed_reports
     Report.where(user_id: self.following_ids + [self.id])
+  end
+  
+  def cheer(report)
+    self.cheers.find_or_create_by(report_id: report.id)
+  end
+  
+  def uncheer(report)
+    cheer = self.cheers.find_by(report_id: report.id)
+    cheer.destroy if cheer
+  end
+
+  def cheering?(report)
+    self.cheerings.include?(report)
+  end
+  
+  def self.search(search)
+    return User.all unless search
+    User.where(['profile LIKE?', "%#{search}%"])
   end
 end

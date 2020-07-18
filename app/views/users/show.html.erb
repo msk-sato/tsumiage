@@ -5,7 +5,7 @@
       <div class="card-body">
         <h5 class="card-title"><%= @user.name %></h5>
         <p class="card-text"><%= @user.profile %></p>
-        <a href="#" class="btn btn-primary">プロフィール編集</a>
+        <%= link_to "プロフィール編集", edit_user_path(current_user) %>
       </div>
     </div>
     <%= render 'relationships/follow_button', user: @user %>

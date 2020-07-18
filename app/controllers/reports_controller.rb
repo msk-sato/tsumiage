@@ -5,11 +5,11 @@ class ReportsController < ApplicationController
   def create
     @report = current_user.reports.build(report_params)
     if @report.save
-      flash[:success] = 'メッセージを投稿しました。'
+      flash[:success] = '投稿しました。'
       redirect_to root_url
     else
-      @reports = current_user.feed_reports.order(id: :desc).page(params[:page])
-      flash.now[:danger] = 'メッセージの投稿に失敗しました。'
+      @reports = current_user.reports.order(id: :desc).page(params[:page])
+      flash.now[:danger] = '投稿に失敗しました。'
       render 'toppages/index'
     end
   end
@@ -19,11 +19,16 @@ class ReportsController < ApplicationController
     flash[:success] = 'メッセージを削除しました。'
     redirect_back(fallback_location: root_path)
   end
+
+  def show
+    @report = Report.find_by(id: params[:id])
+    @cheers_count = Cheer.where(report_id: @report.id).count
+  end
   
   private
 
-  def report_params
-    params.require(:report).permit(:content)
+  def micropost_params
+    params.require(:micropost).permit(:content)
   end
   
   def correct_user
