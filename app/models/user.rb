@@ -14,7 +14,7 @@ class User < ApplicationRecord
   has_many :reverses_of_relationship, class_name: 'Relationship', foreign_key: 'follow_id'
   has_many :followers, through: :reverses_of_relationship, source: :user
   has_many :cheers
-  has_many :cheerings, through: :cheers, source: :report
+  has_many :likes, through: :cheers, source: :report
   
   def follow(other_user)
     unless self == other_user
@@ -35,21 +35,21 @@ class User < ApplicationRecord
     Report.where(user_id: self.following_ids + [self.id])
   end
   
-  def cheer(report)
+  def like(report)
     self.cheers.find_or_create_by(report_id: report.id)
   end
   
-  def uncheer(report)
-    cheer = self.cheers.find_by(report_id: report.id)
-    cheer.destroy if cheer
+  def unlike(report)
+    like = self.cheers.find_by(report_id: report.id)
+    like.destroy if like
   end
 
-  def cheering?(report)
-    self.cheerings.include?(report)
+  def like?(report)
+    self.likes.include?(report)
   end
   
   def self.search(search)
-    return User.all unless search
-    User.where(['profile LIKE?', "%#{search}%"])
+    return User.all if search.blank?
+    User.where('profile LIKE ?', "%#{search}%")
   end
 end

@@ -1,11 +1,15 @@
-<% if current_user.cheering?(report) %>
-  <%= form_with(model: user.cheers.find_by(report_id: report.id), local: true, method: :delete) do |f| %>
+<% if current_user.like?(report) %>
+  <%= form_with(model: current_user.cheers.find_by(report_id: report.id), local: true, method: :delete) do |f| %>
     <%= hidden_field_tag :report_id, report.id %>
-    <%= f.submit 'cheer', class: 'btn btn-danger' %>
+    <%= link_to "Delete", report, method: :delete, data: { confirm: "削除してよろしいですか？" }, class: 'btn btn-danger' %>
+    <%= f.submit '解除する', class: 'btn btn-danger' %>
+    <i class="fas fa-bullhorn"></i><%= report.liked_by.count %>
   <% end %>
 <% else %>
   <%= form_with(model: current_user.cheers.build, local: true) do |f| %>
     <%= hidden_field_tag :report_id, report.id %>
-    <%= f.submit 'uncheer', class: 'btn btn-primary' %>
+    <%= link_to "Delete", report, method: :delete, data: { confirm: "削除してよろしいですか？" }, class: 'btn btn-danger' %>
+    <%= f.submit '応援する', class: 'btn btn-primary' %>
+    <i class="fas fa-bullhorn"></i><%= report.liked_by.count %>
   <% end %>
 <% end %>

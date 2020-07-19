@@ -56,8 +56,10 @@ class UsersController < ApplicationController
   end
   
   def search
-    @users = User.Search(params[:search])
+    @users = User.search(params[:search][:profile])
   end
+  
+  
   
   private
 

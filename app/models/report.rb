@@ -4,6 +4,6 @@ class Report < ApplicationRecord
   validates :content, presence: true, length: { maximum: 255 }
   
   has_many :cheers
-  has_many :cheereds, through: :cheers, source: :user
+  has_many :liked_by, through: :cheers, source: :user
 end
 

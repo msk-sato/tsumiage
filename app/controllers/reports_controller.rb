@@ -22,7 +22,6 @@ class ReportsController < ApplicationController
 
   def show
     @report = Report.find_by(id: params[:id])
-    @cheers_count = Cheer.where(report_id: @report.id).count
   end
   
   private

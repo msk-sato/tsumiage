@@ -1,11 +1,13 @@
 <div class="row">
   <aside class="col-sm-4">
     <div class="card">
-      <div class="card-header">
-        <h3 class="card-title"><%= @user.name %></h3>
-      </div>
+      <img class="rounded img-fluid" src="<%= gravatar_url(@user, { size: 500 }) %>" alt="">
       <div class="card-body">
-        <img class="rounded img-fluid" src="<%= gravatar_url(@user, { size: 500 }) %>" alt="">
+        <h5 class="card-title"><%= @user.name %></h5>
+        <p class="card-text"><%= @user.profile %></p>
+        <% unless @user != current_user %>
+          <%= link_to "プロフィール編集", edit_user_path(current_user) %>
+        <% end %>
       </div>
     </div>
     <%= render 'relationships/follow_button', user: @user %>
