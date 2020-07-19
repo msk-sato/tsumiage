@@ -26,8 +26,8 @@ class ReportsController < ApplicationController
   
   private
 
-  def micropost_params
-    params.require(:micropost).permit(:content)
+  def report_params
+    params.require(:report).permit(:content)
   end
   
   def correct_user
